@@ -5,9 +5,9 @@ from copy import deepcopy
 
 
 class Game:
-    def __init__(self, Width, Height, Rows, Cols, Square,Win):
+    def __init__(self, Width, Height, Rows, Cols, Square, Win):
         self.Win = Win
-        self.Board = newBoard(Width, Height, Rows, Cols,Square, Win)
+        self.Board = newBoard(Width, Height, Rows, Cols, Square, Win)
         self.Square = Square
         self.selected = None
         self.turn = White
@@ -24,7 +24,7 @@ class Game:
         pygame.display.update()
 
     def reset(self):
-        self.Board = newBoard(Width, Height, Rows, Cols,Square, Win)
+        self.Board = newBoard(Width, Height, Rows, Cols, Square, Win)
         self.Square = Square
         self.selected = None
 
@@ -102,7 +102,7 @@ class Game:
         return possible_moves
 
 
-    def checkmate(self,Board):
+    def checkmate(self,Board:newBoard):
 
         king_pos = self.get_King_pos(Board.Board)
         get_king = Board.get_piece(king_pos[0], king_pos[1])

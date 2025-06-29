@@ -12,6 +12,7 @@ class Piece:
         self.x = 0
         self.y = 0
         self.available_moves = []
+        self.calc_pos()
 
     def piece_move(self, row, col):
         self.row = row
