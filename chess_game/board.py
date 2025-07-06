@@ -38,10 +38,10 @@ class newBoard:
                     if col == 2 or col == 5:
                         self.Board[row][col] = Bishop(self.Square, Black_Bishop, Black, "Bishop", row, col)
                     
-                    if col == 4:
+                    if col == 3:
                         self.Board[row][col] = Queen(self.Square, Black_Queen, Black, "Queen", row, col)
                     
-                    if col == 3:
+                    if col == 4:
                         self.Board[row][col] = King(self.Square, Black_King, Black, "King", row, col)
 
                 if row == 7:

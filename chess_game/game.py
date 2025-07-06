@@ -45,8 +45,8 @@ class Game:
                 print("White wins")
                 return True
 
-
-    def enemies_moves(self,piece, Board):
+    # On récupère tous les déplacements possibles de toutes les pièces l'adversaire 
+    def enemies_moves(self, piece, Board):
         enemies_moves = []
         for r in range(len(Board)):
             for c in range(len(Board[r])):
@@ -59,6 +59,7 @@ class Game:
         #print("enemies_moves",enemies_moves)
         return enemies_moves
 
+    # On récupère la position du roi pour le joueur qui doit jouer
     def get_King_pos(self,Board):
         for r in range(len(Board)):
             for c in range(len(Board)):
@@ -66,27 +67,33 @@ class Game:
                     if Board[r][c].type == "King" and Board[r][c].color == self.turn:
                         return (r,c)
 
-    def simulate_move(self, piece,row,col):
+    # Permet de ne pas pouvoir déplacer une pièce si cela met en echec le roi
+    def simulate_move(self, piece, row, col):
+        # On enregistre la position de la pièce à déplacer ainsi que la pièce sur laquelle on veut déplacer la pièce
         piece_row, piece_col = piece.row, piece.col
-        print("piece row, col",piece_row, piece_col)
-        print(row,col)
         save_piece = self.Board.Board[row][col]
+        # Si la case est n'est pas vide, on lui met une case vide
         if self.Board.Board[row][col] != 0:
             self.Board.Board[row][col] = 0
 
+        # On effectue le déplacement
         self.Board.Board[piece.row][piece.col], self.Board.Board[row][col] = self.Board.Board[row][col], self.Board.Board[piece.row][piece.col]
 
+        # On vérifie que le roi ne soit pas en échec en vérifiant sa position avec les déplacements possibles de l'adversaire
         king_pos = self.get_King_pos(self.Board.Board)
+        # Si le roi est mis en échec, on retourne False, sinon True
         if king_pos in self.enemies_moves(piece,self.Board.Board):
-            piece.row,piece.col = piece_row, piece_col
-            self.Board.Board[piece_row][piece_col] = piece
-            self.Board.Board[row][col] = save_piece
-            return False
+            possible_move = False
+        else:
+            possible_move = True
 
+        # On replace l'échiquier comme il l'était avant le déplacement
         piece.row,piece.col = piece_row, piece_col
         self.Board.Board[piece_row][piece_col] = piece
         self.Board.Board[row][col] = save_piece
-        return True
+
+        # On retourne le resultat (si True : le déplacement peut être fait, si False : le déplacement met en echec le roi et ne peut donc pas être fait)   
+        return possible_move
 
     def possible_moves(self,Board):
         possible_moves = []
@@ -151,6 +158,7 @@ class Game:
         if self.selected and (row,col) in self.valid_moves:
             if piece == 0 or piece.color != self.selected.color:
                 print(self.simulate_move(self.selected,row,col))
+                # Si simulate_move est true alors on effectue le déplacement 
                 if self.simulate_move(self.selected,row,col):
 
                     self.remove(self.Board.Board,piece,row,col)
